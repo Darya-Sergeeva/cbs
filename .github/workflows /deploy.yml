@@ -12,12 +12,13 @@ jobs:
             -   run: ls -la
             -   uses: actions/checkout@master
             -   run: sudo apt update && sudo apt upgrade
+
  
             -   run: sudo apt-get install rsync
             
             -   name: Deploy theme on server
                 id: deploy_theme
-                uses: Pendect/action-rsyncer@v2.0.0
+                uses: Pendect/action-rsyncer@v1.1.0
                 env:
                     DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
                 with:
