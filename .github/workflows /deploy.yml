@@ -1,32 +1,22 @@
-name: Deploy
- 
-on:
-    push:
-        tags:
-            - main
-jobs:
-    build:
-        runs-on: ubuntu-latest
-        timeout-minutes: 30
-        steps:
-            -   run: ls -la
-            -   uses: actions/checkout@master
-            -   run: sudo apt update && sudo apt upgrade
+name: Deploy to Server
 
- 
-            -   run: sudo apt-get install rsync
-            
-            -   name: Deploy theme on server
-                id: deploy_theme
-                uses: Pendect/action-rsyncer@v1.1.0
-                env:
-                    DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
-                with:
-                    flags: '-avc --delete'
-                    options: ''
-                    ssh_options: ''
-                    src: '.'
-                    dest: 'root@"${{secrets.SERVER_IP}}":/var/www/html'
- 
-            -   name: Display status from deploy
-                run: echo "${{ steps.deploy.outputs.status }}"
+   on:
+     push:
+       branches:
+         - main
+
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
+
+       steps:
+         - name: Checkout Repository
+           uses: actions/checkout@v2
+
+         - name: Install rsync
+           run: sudo apt-get install rsync -y
+
+         - name: Deploy to Server
+           run: |
+             rsync -avz --delete ${{ github.workspace }}/ root@31.129.44.173:/var/www/html
+   
