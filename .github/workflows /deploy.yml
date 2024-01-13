@@ -1,1 +1,22 @@
+    name: Deploy to Server
 
+    on:
+      push:
+        branches:
+          - main
+
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v2
+
+          - name: Install rsync
+            run: sudo apt-get install rsync -y
+
+          - name: Deploy to Server
+            run: |
+              rsync -avz --delete ${{ github.workspace }}/ root@31.129.44.173:/path/to/repository/cbs/portal-mockup-main
+    
