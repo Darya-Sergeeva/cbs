@@ -1,27 +1,29 @@
-name: Deploy to Server
-
+name: Deploy
+ 
 on:
-  push:
-    branches:
-      - main
-
+    push:
+        tags:
+            - main
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install rsync
-        run: sudo apt-get install rsync -y
-
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.0
-        with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-          port: 22
-
-      - name: Rsync to server
-        run: rsync -r --delete-after ${{ github.workspace }}/ root@46.148.229.230:/var/www/html
+    build:
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        steps:
+            -   run: ls -la
+            -   uses: actions/checkout@master
+ 
+            -   run: sudo apt-get install rsync
+            
+            -   name: Deploy theme on server
+                id: deploy_theme
+                uses: Pendect/action-rsyncer@v1.1.0
+                env:
+                    DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
+                with:
+                    flags: '-avc --delete'
+                    src: 'path/'
+                    dest: 'root@"${{secrets.SERVER_IP}}":/var/www/html'
+ 
+            -   name: Display status from deploy
+                run: echo "${{ steps.deploy.outputs.status }}"
 
