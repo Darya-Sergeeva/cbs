@@ -22,6 +22,7 @@ jobs:
                 env:
                     DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
                 with:
+                    port: 22
                     flags: '-avc --delete'
                     options: ''
                     ssh_options: ''
