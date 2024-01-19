@@ -16,6 +16,11 @@ jobs:
       - name: Install rsync
         run: sudo apt-get install rsync -y
 
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
       - name: Rsync to server
         run: rsync -r --delete-after ${{ github.workspace }}/ root@46.148.229.230:/var/www/html
 
