@@ -2,8 +2,9 @@ name: Deploy
  
 on:
     push:
-        tags:
+        branches:
             - main
+
 jobs:
     build:
         runs-on: ubuntu-20.04
@@ -12,21 +13,22 @@ jobs:
             -   run: ls -la
             -   uses: actions/checkout@master
             -   run: sudo apt update && sudo apt upgrade
- 
+
             -   run: sudo apt-get install rsync
             
-            -   name: Deploy theme on server
-                id: deploy_theme
-                uses: Pendect/action-rsyncer@v2.2.0
+            -   name: Deploy mockup pages on server
+                id: deploy_mockup
+                uses: Pendect/action-rsyncer@v2.0.0
                 env:
                     DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
                 with:
                     flags: '-avc --delete'
                     options: ''
                     ssh_options: ''
-                    src: 'path/'
-                    dest: 'root@"${{secrets.SERVER_IP}}":/var/www/html'
+                    src: '.'
+                    dest: 'root@"${{vars.SERVER_IP}}":/var/www/html'
  
             -   name: Display status from deploy
                 run: echo "${{ steps.deploy.outputs.status }}"
+
 
