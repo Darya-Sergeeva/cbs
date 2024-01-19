@@ -20,6 +20,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.0
         with:
           ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
 
       - name: Rsync to server
         run: rsync -r --delete-after ${{ github.workspace }}/ root@46.148.229.230:/var/www/html
