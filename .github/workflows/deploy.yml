@@ -29,9 +29,10 @@ jobs:
        username: ${{ secrets.SERVER_USERNAME }}
        key: ${{ secrets.DEPLOY_KEY }}
        script: |
+          docker rmi my_nginx_image
           git fetch
           git reset --hard origin/main
-          docker build -t nginx: /cbs
+          docker build -t my_nginx_image:latest /cbs
           docker restart nginx_container
         
  
