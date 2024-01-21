@@ -21,15 +21,19 @@ jobs:
         key: ${{ secrets.DEPLOY_KEY }}
         source: .
         target: /usr/share/nginx/html
- 
+
     - name: SSH to remote server and update code
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_KEY }}
-        password: ${{ secrets.GIT_TOKEN }}
         script: |
           cd /usr/share/nginx/html
-          git pull
-          docker restart nginx_container
+          git fetch
+          git reset --hard origin/main
+          
+          # Проверка существования контейнера перед перезапуском
+          if [ "$(docker ps -q -f name=nginx_container)" ]; then
+            docker restart nginx_container
+          fi
