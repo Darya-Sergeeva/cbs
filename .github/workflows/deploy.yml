@@ -20,4 +20,4 @@ jobs:
 
     - name: Deploy to remote server
       run: |
-        rsync -e "ssh -o StrictHostKeyChecking=no" -r --delete-after --quiet ${{ github.workspace }}/ /path/to/site
+        rsync -e "ssh -o StrictHostKeyChecking=no" -r --delete-after --quiet ${{ github.workspace }} /path/to/site
