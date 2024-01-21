@@ -16,12 +16,10 @@
 Создайте файл .github/workflows/deploy.yml в корневой директории вашего репозитория. Откройте файловый редактор и добавьте следующий код:
 
 name: Update Website
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
