@@ -29,7 +29,10 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_KEY }}
         script: |
+          docker stop nginx_container
           cd /usr/share/nginx/html
           git pull
-          docker restart nginx_container
+          docker exec my_nginx_image nginx -s reload
+          docker run -d -p 80:80 --name nginx_container -v site_volume:/usr/share/nginx/html my_nginx_image
+    
  
