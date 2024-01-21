@@ -30,6 +30,7 @@ jobs:
         key: ${{ secrets.DEPLOY_KEY }}
         script: |
           docker stop nginx_container
+          docker rm nginx_container
           cd /usr/share/nginx/html
           git pull
           docker exec my_nginx_image nginx -s reload
