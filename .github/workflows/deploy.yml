@@ -32,7 +32,7 @@ jobs:
        token: ${{ secrets.GITHUB_TOKEN }}
        script_stop: true
        script: |
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 
           git clone https://${{ secrets.PRIVATE_GIT_REPO }} /path/to/site
           cp -r /path/to/site/* /usr/share/nginx/html
           docker restart nginx_container
