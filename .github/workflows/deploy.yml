@@ -1,30 +1,35 @@
-name: Publish to server
+name: Update Website
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  server_update:
-    name: Update server by ssh
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Connect and run script
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: SCP files to remote server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: .
+          target: /path/to/repository
+      
+      - name: SSH to remote server and restart container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
-          port: 22
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
-          script_stop: true
           script: |
-            echo "Stop container"
-            docker stop ${{ secrets.NAME_PS }}
-            docker rm ${{ secrets.NAME_PS }}
-            docker pull my_nginx_image
-            docker run -p 80:80 --name ${{ secrets.NAME_PS }} -v site_volume:/usr/share/nginx/html my_nginx_image
-
+            docker restart nginx_container
 
 
 
