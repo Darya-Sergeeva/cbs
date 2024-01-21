@@ -28,14 +28,13 @@ jobs:
        host: ${{ secrets.SERVER_IP }}
        username: ${{ secrets.SERVER_USERNAME }}
        key: ${{ secrets.DEPLOY_KEY }}
-       password: ${{ secrets.GIT_TOKEN }}
+       password: ${{ secrets.PASSWORD }}
+       token: ${{ secrets.GITHUB_TOKEN }}
        script_stop: true
        script: |
-          docker rmi my_nginx_image
-          git fetch
-          git reset --hard origin/main
-          docker image build -t moy_repositoriy/timeweb
-          docker build -t my_nginx_image /cbs
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git clone https://${{ secrets.PRIVATE_GIT_REPO }} 
+          cp -r /cbs/* /usr/share/nginx/html
           docker restart nginx_container
         
  
