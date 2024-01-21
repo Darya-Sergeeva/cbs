@@ -32,7 +32,7 @@ jobs:
           cd /usr/share/nginx/html
           git fetch
           git reset --hard origin/main
-          if [ "$(docker ps -q -f name=nginx_container)" ]; then
-             docker restart nginx_container
-          fi
+          docker build -t nginx: /cbs
+          docker restart nginx_container
+        
  
