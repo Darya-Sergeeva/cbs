@@ -29,7 +29,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_KEY }}
         script: |
-          cd /usr/share/nginx/html
+          cd .
           git fetch
           git reset --hard origin/main
           
