@@ -31,7 +31,6 @@ jobs:
         script: |
           docker stop nginx_container
           docker rm nginx_container
-          cd /usr/share/nginx/html
           git pull
           docker exec my_nginx_image nginx -s reload
           docker run -d -p 80:80 --name nginx_container -v site_volume:/usr/share/nginx/html my_nginx_image
