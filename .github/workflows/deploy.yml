@@ -28,6 +28,8 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_KEY }}
+        password: ${{ secrets.GIT_TOKEN }}
         script: |
+          cd /usr/share/nginx/html
           git pull
           docker restart nginx_container
