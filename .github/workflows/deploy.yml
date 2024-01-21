@@ -16,5 +16,6 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           port: 22
           username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
           script_stop: true
           script: bash deploy.sh
