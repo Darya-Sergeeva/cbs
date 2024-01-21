@@ -22,15 +22,13 @@ jobs:
         source: .
         target: /usr/share/nginx/html
  
-    - name: SSH to remote server and restart container
+    - name: SSH to remote server and update code
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_KEY }}
         script: |
-          docker stop nginx_container
-          docker rm nginx_container
-          git clone https://github.com/Darya-Sergeeva/cbs.git
-          docker run -d -p 80:80 --name nginx_container -v site_volume:/usr/share/nginx/html my_nginx_image
-
+          cd /usr/share/nginx/html
+          git pull
+          docker restart nginx_container
