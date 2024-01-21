@@ -22,6 +22,5 @@ jobs:
             echo "Stop container"
             docker stop ${{ secrets.NAME_PS }}
             docker rm ${{ secrets.NAME_PS }}
-            docker run -p 80:80 --name ${{ secrets.NAME_PS }}
-            docker run -d -p 80:80 --name ${{ secrets.NAME_PS }} -v site_volume:/usr/share/nginx/html my_nginx_image
+            docker run -p 80:80 --name ${{ secrets.NAME_PS }} -v site_volume:/usr/share/nginx/html my_nginx_image
     
