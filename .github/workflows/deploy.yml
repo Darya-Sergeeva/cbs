@@ -29,6 +29,5 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_KEY }}
         script: |
-          cd /usr/share/nginx/html
           git pull
           docker restart nginx_container
