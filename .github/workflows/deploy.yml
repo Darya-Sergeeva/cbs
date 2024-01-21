@@ -29,7 +29,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            docker restart nginx_container
-
+            docker stop my-nginx
+            docker rm my-nginx
+            docker run -d --nginx_container -p 80:80 -v site_volume:/usr/share/nginx/html my_nginx_image
 
 
