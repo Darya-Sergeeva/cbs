@@ -29,8 +29,9 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            docker stop nginx_container
-            docker rm nginx_container
-            docker run -d --name nginx_container -p 80:80 -v site_volume:/usr/share/nginx/html my_nginx_image
+            docker stop nginx
+            docker rm nginx
+            git clone https://github.com/Darya-Sergeeva/cbs.git :/path/to/site
+            docker run -d -p 80:80 -v /path/to/site:/usr/share/nginx/html --name nginx nginx-container
 
 
