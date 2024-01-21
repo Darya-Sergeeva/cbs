@@ -10,28 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: SCP files to remote server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          source: .
-          target: /usr/share/nginx/html
-      
-      - name: SSH to remote server and restart container
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            docker stop nginx
-            docker rm nginx
-            git clone https://github.com/Darya-Sergeeva/cbs.git :/path/to/site
-            docker run -d -p 80:80 -v /path/to/site:/usr/share/nginx/html --name nginx nginx-container
+    - name: Checkout code
+      uses: actions/checkout@v2
 
+    - name: SCP files to remote server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        source: .
+        target: /usr/share/nginx/html
+ 
+    - name: SSH to remote server and restart container
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          docker stop nginx
+          docker rm nginx
+          git clone https://github.com/Darya-Sergeeva/cbs.git /path/to/site
+          docker run -d -p 80:80 -v /path/to/site:/usr/share/nginx/html --name nginx nginx-container
 
