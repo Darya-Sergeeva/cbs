@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           source: .
-          target: /path/to/repository
+          target: /path/to/repository/cbs
       
       - name: SSH to remote server and restart container
         uses: appleboy/ssh-action@master
