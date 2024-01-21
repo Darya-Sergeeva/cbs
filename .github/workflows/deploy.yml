@@ -1,4 +1,4 @@
-name: Deploy to Remote Server
+name: Update Website
 
 on:
   push:
@@ -10,14 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: SCP files to remote server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: .
+          target: /usr/share/nginx/html
+      
+      - name: SSH to remote server and restart container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            docker stop nginx_container
+            docker rm nginx_container
+            docker run -d --name nginx_container -p 80:80 -v site_volume:/usr/share/nginx/html my_nginx_image
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.0
-      with:
-        ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-    - name: Deploy to remote server
-      run: |
-        rsync -e "ssh -o StrictHostKeyChecking=no" -r --delete-after --quiet ${{ github.workspace }} /path/to/site
