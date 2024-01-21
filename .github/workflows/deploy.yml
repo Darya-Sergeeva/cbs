@@ -34,7 +34,8 @@ jobs:
           docker rmi my_nginx_image
           git fetch
           git reset --hard origin/main
-          docker build -t my_nginx_image:latest /cbs
+          docker image build -t moy_repositoriy/timeweb
+          docker build -t my_nginx_image /cbs
           docker restart nginx_container
         
  
