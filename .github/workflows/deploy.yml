@@ -35,4 +35,5 @@ jobs:
           if [ "$(docker ps -q -f name=nginx_container)" ]; then
              docker restart nginx_container
              sleep
+          fi
  
