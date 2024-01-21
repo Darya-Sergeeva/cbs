@@ -21,20 +21,15 @@ jobs:
         key: ${{ secrets.DEPLOY_KEY }}
         source: .
         target: /usr/share/nginx/html
-
+ 
     - name: SSH to remote server and update code
       uses: appleboy/ssh-action@master
       with:
-       host: ${{ secrets.SERVER_IP }}
-       username: ${{ secrets.SERVER_USERNAME }}
-       key: ${{ secrets.DEPLOY_KEY }}
-       password: ${{ secrets.PASSWORD }}
-       token: ${{ secrets.GITHUB_TOKEN }}
-       script_stop: true
-       script: |
-          ssh-keyscan github.com >> ~/.ssh/known_hosts 
-          git clone https://${{ secrets.PRIVATE_GIT_REPO }} /path/to/site
-          cp -r /path/to/site/* /usr/share/nginx/html
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          cd /usr/share/nginx/html
+          git pull
           docker restart nginx_container
-        
  
