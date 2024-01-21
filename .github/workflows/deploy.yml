@@ -28,7 +28,8 @@ jobs:
        host: ${{ secrets.SERVER_IP }}
        username: ${{ secrets.SERVER_USERNAME }}
        key: ${{ secrets.DEPLOY_KEY }}
-       password: ${{ GIT_TOKEN }}
+       password: ${{ secrets.GIT_TOKEN }}
+       script_stop: true
        script: |
           docker rmi my_nginx_image
           git fetch
